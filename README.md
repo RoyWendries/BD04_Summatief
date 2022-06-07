@@ -1,2 +1,3 @@
 # BD04_Summatief
-idek
+
+Made by: Szonja Hollos, Roy Wendries
