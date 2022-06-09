@@ -1,10 +1,15 @@
+from sklearn import tree
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split
+from sklearn.metrics import classification_report, confusion_matrix
+from sklearn.model_selection import StratifiedKFold, train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.linear_model import LogisticRegression
-from sklearn import tree
+import warnings
+import sklearn.exceptions
+warnings.filterwarnings(
+    "ignore", category=sklearn.exceptions.UndefinedMetricWarning)
 
 
 class MLModel:
@@ -104,6 +109,10 @@ class MLModel:
         fig.show()
         input('press a key to continue: ')
 
+    def LR_plotter(self):
+        print(classification_report(self.y_test,
+              self.data.predict(self.X_test.values)))
+
 
 # Calling MLR with 2 features
 mlr = MLModel(LinearRegression, 'MLR')
@@ -125,9 +134,11 @@ lr = MLModel(LogisticRegression, 'LR')
 lr.df_Setter(['Mfg_Year', 'Price'], 'Fuel_Type')
 lr.predict_Data([1998, 9000], [1999, 8671], [2002, 13500])
 lr.results('fuel type', ['build year', 'cost'])
+lr.LR_plotter()
 
 # Calling LR with 3 features
 lr2 = MLModel(LogisticRegression, 'LR')
 lr2.df_Setter(['Mfg_Year', 'Price', 'Quarterly_Tax'], 'Fuel_Type')
 lr2.predict_Data([1998, 9000, 100], [1999, 8671, 210], [2002, 13500, 50])
 lr2.results('fuel type', ['build year', 'cost', 'quarterly tax'])
+lr2.LR_plotter()

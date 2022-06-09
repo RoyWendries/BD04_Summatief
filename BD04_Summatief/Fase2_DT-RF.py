@@ -1,8 +1,10 @@
+from msilib.schema import RadioButton
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn import tree
+from sklearn.ensemble import RandomForestClassifier
 
 
 class MLModel:
@@ -35,7 +37,7 @@ class MLModel:
 
     # Fit data to model
     def Regfitter(self):
-        if self.modelName == 'DTR':
+        if self.modelName == 'DTR' or self.modelName == 'RFC':
             self.data = self.model(max_depth=4)
         else:
             self.data = self.model()
@@ -61,22 +63,28 @@ class MLModel:
                 i = i + 1
             print('Predicted', predict, 'of a car on the basis of a/an', features[0],
                   'of', e[0][0], category, ': ', self.data.predict(e))
-       # if self.modelName == "DTC":
-        self.DT_plotter()
+        if self.modelName == 'DTC' or self.modelName == "DTR":
+            self.DT_plotter()
+        else:
+            self.RF_plotter()
 
     def DT_plotter(self):
         tree.plot_tree(self.data, filled=True)
         plt.show()
         input('Press any key to continue: ')
 
+    def RF_plotter(self):
+
+        plt.show()
+
 
 # Calling DT classifier with 2 features
-dtc = MLModel(tree.DecisionTreeClassifier, 'DTC')
+'''dtc = MLModel(tree.DecisionTreeClassifier, 'DTC')
 dtc.df_Setter(['Mfg_Year', 'Price'], 'Fuel_Type')
 dtc.predict_Data([1998, 9000], [1999, 8671], [2002, 13500])
 dtc.results('fuel type', ['build year', 'cost'])
 
-# Calling DT Classifier with 3 features
+# Calling DT classifier with 3 features
 dtc2 = MLModel(tree.DecisionTreeClassifier, 'DTC')
 dtc2.df_Setter(['Mfg_Year', 'Price', 'Quarterly_Tax'], 'Fuel_Type')
 dtc2.predict_Data([1998, 9000, 100], [1999, 8671, 210], [2002, 13500, 50])
@@ -94,4 +102,15 @@ dtr.results('cost', ['age', 'distance traveled'])
 dtr2 = MLModel(tree.DecisionTreeRegressor, 'DTR')
 dtr2.df_Setter(['Age_08_04', 'KM', 'Quarterly_Tax'], 'Price')
 dtr2.predict_Data([5, 100, 100], [15, 100000, 210], [20, 30000, 50])
-dtr2.results('cost', ['age', 'distance traveled', 'quarterly tax'])
+dtr2.results('cost', ['age', 'distance traveled', 'quarterly tax'])'''
+
+
+rfc = MLModel(RandomForestClassifier, 'RFC')
+rfc.df_Setter(['Mfg_Year', 'Price'], 'Fuel_Type')
+rfc.predict_Data([1998, 9000], [1999, 8671], [2002, 13500])
+rfc.results('fuel type', ['build year', 'cost'])
+
+rfc2 = MLModel(RandomForestClassifier, 'RFC')
+rfc2.df_Setter(['Mfg_Year', 'Price', 'Quarterly_Tax'], 'Fuel_Type')
+rfc2.predict_Data([1998, 9000, 100], [1999, 8671, 210], [2002, 13500, 50])
+rfc2.results('fuel type', ['build year', 'cost', 'quarterly tax'])
