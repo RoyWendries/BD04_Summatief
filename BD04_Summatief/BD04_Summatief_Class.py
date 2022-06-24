@@ -2,11 +2,14 @@ from sklearn import tree
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.metrics import classification_report, confusion_matrix
+import VisualizeNN as VisNN
+from sklearn.metrics import classification_report
 from sklearn.model_selection import StratifiedKFold, train_test_split
 from sklearn.linear_model import LinearRegression, LogisticRegression
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 from sklearn.neural_network import MLPClassifier, MLPRegressor
+from sklearn import svm
+from seaborn import scatterplot
 
 import warnings
 import sklearn.exceptions
@@ -15,10 +18,13 @@ warnings.filterwarnings(
 
 
 class MLModel:
-    def __init__(self, model, modelName, features):
+    def __init__(self, model, modelName, features, MaxDepth=False, NN=False):
         self.model = model
         self.modelName = modelName
+        self.modelLength = len(features)
         self.features = features
+        self.MaxDepth = MaxDepth
+        self.NN = NN
         self.readData()
 
     # Read Data
@@ -27,9 +33,9 @@ class MLModel:
         self.df = pd.read_excel(xls, "data")
 
     # Define X and y
-    def df_Setter(self, X,  y):
+    def df_Setter(self, X,  Y):
         self.X = self.df[X]
-        self.y = self.df[y]
+        self.y = self.df[Y]
         self.split_Data()
 
     # Split data into trainings data and test data
@@ -44,21 +50,24 @@ class MLModel:
         self.Xpredict3 = [data3]
 
     # Fit data to model
-    def Regfitter(self):
-        if self.modelName == 'DTR' or self.modelName == 'RFC' or self.modelName == 'RFC_Full':
+    def Regfitter(self, layers):
+        if self.MaxDepth == True:
             self.data = self.model(max_depth=4)
+        elif self.NN == True:
+            self.data = self.model(hidden_layer_sizes=(
+                layers,), alpha=0.01, tol=0.001, random_state=1)
         else:
-            self.data = self.model()
+            self.data = self.model(kernel='rbf')
         self.data.fit(self.X_train.values, self.y_train.values)
 
-    def results(self, predict):
-        self.Regfitter()
+    def results(self, predict, layers=None):
+        self.Regfitter(layers)
         print('\nScore of', self.modelName, 'on trainings data: ',
               self.data.score(self.X_train.values, self.y_train.values))
         print('Score of', self.modelName, 'on testing data: ',
               self.data.score(self.X_test.values, self.y_test.values))
 
-        if self.modelName != 'RFR_Full' and self.modelName != 'RFC_Full':
+        if self.modelLength <= 3:
             # Make predictions based on the predict data
             predictions = [self.Xpredict1, self.Xpredict2, self.Xpredict3]
             for e in predictions:
@@ -138,3 +147,30 @@ class MLModel:
         plt.xlabel('Relative Importance')
         plt.show()
         input('Press any key to continue: ')
+
+    def MLP_plotter(self):
+        network_structure = np.hstack(([self.X_train.shape[1]], np.asarray(
+            self.data.hidden_layer_sizes), [1]))
+        network = VisNN.DrawNN(network_structure, self.data.coefs_)
+        network.draw()
+
+    def SVM_plotter(self, predictor='Fuel_Type'):
+        df = pd.DataFrame(self.y_train)
+        df[predictor] = df[predictor].astype('category')
+        df["Category"] = df[predictor].cat.codes
+
+        # Get support vectors themselves
+        support_vectors = self.data.support_vectors_
+        fig, ax = plt.subplots()
+        scatter = ax.scatter(
+            self.X_train.values[:, 0], self.X_train.values[:, 1], c=df['Category'])
+        scatter1 = ax.scatter(
+            support_vectors[:, 0], support_vectors[:, 1], color='red', label='Support Vectors')
+        plt.title('Linearly separable data with support vectors')
+        plt.xlabel(self.features[0])
+        plt.ylabel(self.features[1])
+        legend1 = plt.legend(*scatter.legend_elements(),
+                             title="Legend of data", loc="lower right")
+        ax.add_artist(legend1)
+        plt.legend()
+        plt.show()

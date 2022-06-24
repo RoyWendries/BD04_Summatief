@@ -19,7 +19,8 @@ dtc2.DT_plotter()
 
 # Calling DT regressor with 2 features (max_depth=4 to stop overfitting and
 # maintain consistent accuracy between train and test data)
-dtr = MLModel(tree.DecisionTreeRegressor, 'DTR', ['age', 'distance traveled'])
+dtr = MLModel(tree.DecisionTreeRegressor, 'DTR', [
+              'age', 'distance traveled'], MaxDepth=True)
 dtr.df_Setter(['Age_08_04', 'KM'], 'Price')
 dtr.predict_Data([5, 100], [15, 100000], [20, 30000])
 dtr.results('cost')
@@ -28,7 +29,7 @@ dtr.DT_plotter()
 # Calling DT regressor with 3 features (max_depth=4 to stop overfitting and
 # maintain consistent accuracy between train and test data)
 dtr2 = MLModel(tree.DecisionTreeRegressor, 'DTR', [
-               'age', 'distance traveled', 'quarterly tax'])
+               'age', 'distance traveled', 'quarterly tax'], MaxDepth=True)
 dtr2.df_Setter(['Age_08_04', 'KM', 'Quarterly_Tax'], 'Price')
 dtr2.predict_Data([5, 100, 100], [15, 100000, 210], [20, 30000, 50])
 dtr2.results('cost')
@@ -36,7 +37,8 @@ dtr2.DT_plotter()
 
 # Calling RF classifier with 2 features (max_depth=4 to stop overfitting and
 # maintain consistent accuracy between train and test data)
-rfc = MLModel(RandomForestClassifier, 'RFC', ['build year', 'cost'])
+rfc = MLModel(RandomForestClassifier, 'RFC', [
+              'build year', 'cost'], MaxDepth=True)
 rfc.df_Setter(['Mfg_Year', 'Price'], 'Fuel_Type')
 rfc.predict_Data([1998, 9000], [1999, 8671], [2002, 13500])
 rfc.results('fuel type')
@@ -45,7 +47,7 @@ rfc.RF_plotter()
 # Calling RF classifier with 3 features (max_depth=4 to stop overfitting and
 # maintain consistent accuracy between train and test data)
 rfc2 = MLModel(RandomForestClassifier, 'RFC', [
-               'build year', 'cost', 'quarterly tax'])
+               'build year', 'cost', 'quarterly tax'], MaxDepth=True)
 rfc2.df_Setter(['Mfg_Year', 'Price', 'Quarterly_Tax'], 'Fuel_Type')
 rfc2.predict_Data([1998, 9000, 100], [1999, 8671, 210], [2002, 13500, 50])
 rfc2.results('fuel type')
@@ -53,7 +55,7 @@ rfc2.RF_plotter()
 
 # Calling RF classifier with 11 features
 rfc2 = MLModel(RandomForestClassifier, 'RFC_Full', ['manifacture year', 'cost', 'quarterly tax', 'manifacture month',
-                                                    'horse power', 'automatic', 'cc', 'doors', 'cylinders', 'gears', 'weight'])
+                                                    'horse power', 'automatic', 'cc', 'doors', 'cylinders', 'gears', 'weight'], MaxDepth=1)
 rfc2.df_Setter(['Mfg_Year', 'Price', 'Quarterly_Tax', 'Mfg_Month', 'HP',
                'Automatic', 'CC', 'Doors', 'Cylinders', 'Gears', 'Weight'], 'Fuel_Type')
 rfc2.results('fuel type')
