@@ -18,21 +18,22 @@ mlpc2.predict_Data([1998, 9000, 100], [1999, 8671, 210], [2002, 13500, 50])
 mlpc2.results('fuel type', layers=5)
 mlpc2.MLP_plotter()
 
-# Calling MLPR with 2 features and 3 nodes in the hidden layer
+# Calling MLPR with 2 features and 25 nodes in the hidden layer
 mlpr = MLModel(MLPRegressor, 'MLPR', [
-    'age', 'distance traveled'], NN=True)
-mlpr.df_Setter(['Age_08_04', 'KM'], 'Price')
-mlpr.predict_Data([5, 100], [15, 100000], [20, 30000])
-mlpr.results('cost', layers=3)
+    'age', 'horse power'], NN=True)
+mlpr.df_Setter(['Age_08_04', 'HP'], 'Price')
+mlpr.predict_Data([5, 100], [30, 180], [40, 69])
+mlpr.results('cost', layers=25)
 mlpr.MLP_plotter()
 
-# Calling MLPR with 3 features and 4 nodes in the hidden layer
+
+# Calling MLPR with 3 features and 20 nodes in the hidden layer
 mlpr2 = MLModel(MLPRegressor, 'MLPR', [
-    'age', 'distance traveled', 'quarterly tax'], NN=True)
-mlpr2.df_Setter(['Age_08_04', 'KM', 'Quarterly_Tax'], 'Price')
-mlpr2.predict_Data([5, 100, 100], [15, 100000, 210], [20, 30000, 50])
-mlpr2.results('cost', layers=5)
-mlpr2.MLP_plotter()
+    'age', 'horse power', 'quarterly tax'], NN=True)
+mlpr2.df_Setter(['Age_08_04', 'HP', 'Quarterly_Tax'], 'Price')
+mlpr2.predict_Data([5, 100, 100], [30, 180, 210], [40, 69, 50])
+mlpr2.results('cost', layers=20)
+
 
 # Calling SVC with 2 features
 svmc = MLModel(svm.SVC, 'SVMC', ['build year', 'cost'])
@@ -50,15 +51,15 @@ svmc2.results('fuel type')
 
 # Calling SVR with 2 features
 svmr = MLModel(svm.SVR, 'SVMR', [
-    'age', 'distance traveled'])
-svmr.df_Setter(['Age_08_04', 'KM'], 'Price')
-svmr.predict_Data([5, 100], [15, 100000], [20, 30000])
+    'age', 'horse power'])
+svmr.df_Setter(['Age_08_04', 'HP'], 'Price')
+svmr.predict_Data([5, 100], [30, 180], [40, 69])
 svmr.results('cost')
 svmr.SVM_plotter(predictor='Price')
 
 # Calling SVR with 3 features
 svmr2 = MLModel(svm.SVR, 'SVMR', [
-    'age', 'distance traveled', 'quarterly tax'])
-svmr2.df_Setter(['Age_08_04', 'KM', 'Quarterly_Tax'], 'Price')
-svmr2.predict_Data([5, 100, 100], [15, 100000, 210], [20, 30000, 50])
+    'age', 'horse power', 'quarterly tax'])
+svmr2.df_Setter(['Age_08_04', 'HP', 'Quarterly_Tax'], 'Price')
+svmr2.predict_Data([5, 100, 100], [30, 180, 210], [40, 69, 50])
 svmr2.results('cost')

@@ -10,6 +10,8 @@ from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 from sklearn.neural_network import MLPClassifier, MLPRegressor
 from sklearn import svm
 from seaborn import scatterplot
+from sklearn import metrics
+import seaborn as sns
 
 import warnings
 import sklearn.exceptions
@@ -54,10 +56,10 @@ class MLModel:
         if self.MaxDepth == True:
             self.data = self.model(max_depth=4)
         elif self.NN == True:
-            self.data = self.model(hidden_layer_sizes=(
-                layers,), alpha=0.01, tol=0.001, random_state=1)
+            self.data = self.model(
+                hidden_layer_sizes=layers, max_iter=20000, random_state=1)
         else:
-            self.data = self.model(kernel='rbf')
+            self.data = self.model()
         self.data.fit(self.X_train.values, self.y_train.values)
 
     def results(self, predict, layers=None):
@@ -153,8 +155,25 @@ class MLModel:
             self.data.hidden_layer_sizes), [1]))
         network = VisNN.DrawNN(network_structure, self.data.coefs_)
         network.draw()
+        if self.modelName == "MLPR":
+            expected_y = self.y_test.values
+            predicted_y = self.data.predict(self.X_test.values)
+            plt.figure(figsize=(10, 10))
+            sns.regplot(expected_y, predicted_y,
+                        fit_reg=True, scatter_kws={"s": 100})
+            plt.show()
+
+        if self.modelName == "MLPC":
+            print(metrics.classification_report(
+                self.y_test.values, self.data.predict(self.X_test.values)))
 
     def SVM_plotter(self, predictor='Fuel_Type'):
+        if self.modelName == "SVMR":
+            expected_y = self.y_test.values
+            predicted_y = self.data.predict(self.X_test.values)
+            score = metrics.mean_squared_error(expected_y, predicted_y)
+            print(score)
+
         df = pd.DataFrame(self.y_train)
         df[predictor] = df[predictor].astype('category')
         df["Category"] = df[predictor].cat.codes
