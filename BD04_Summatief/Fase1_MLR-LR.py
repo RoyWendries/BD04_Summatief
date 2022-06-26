@@ -3,18 +3,18 @@ from sklearn.linear_model import LinearRegression, LogisticRegression
 
 
 # Calling MLR with 2 features
-mlr = MLModel(LinearRegression, 'MLR', ['age', 'distance traveled'])
-mlr.df_Setter(['Age_08_04', 'KM'], 'Price')
-mlr.predict_Data([5, 100], [15, 100000], [20, 30000])
+mlr = MLModel(LinearRegression, 'MLR', [
+    'age', 'horse power'])
+mlr.df_Setter(['Age_08_04', 'HP'], 'Price')
+mlr.predict_Data([5, 100], [30, 180], [40, 69])
 mlr.results('cost')
 mlr.MLR_plotter('cost')
 
-
 # Calling MLR with 3 features
 mlr2 = MLModel(LinearRegression, 'MLR', [
-               'age', 'distance traveled', 'quarterly tax'])
-mlr2.df_Setter(['Age_08_04', 'KM', 'Quarterly_Tax'], 'Price')
-mlr2.predict_Data([5, 100, 100], [15, 100000, 210], [20, 30000, 50])
+    'age', 'horse power', 'quarterly tax'])
+mlr2.df_Setter(['Age_08_04', 'HP', 'Quarterly_Tax'], 'Price')
+mlr2.predict_Data([5, 100, 100], [30, 180, 210], [40, 69, 50])
 mlr2.results('cost')
 input('Press any key to continue: ')
 

@@ -17,23 +17,25 @@ dtc2.predict_Data([1998, 9000, 100], [1999, 8671, 210], [2002, 13500, 50])
 dtc2.results('fuel type')
 dtc2.DT_plotter()
 
+
 # Calling DT regressor with 2 features (max_depth=4 to stop overfitting and
 # maintain consistent accuracy between train and test data)
 dtr = MLModel(tree.DecisionTreeRegressor, 'DTR', [
-              'age', 'distance traveled'], MaxDepth=True)
-dtr.df_Setter(['Age_08_04', 'KM'], 'Price')
-dtr.predict_Data([5, 100], [15, 100000], [20, 30000])
+    'age', 'horse power'], MaxDepth=True)
+dtr.df_Setter(['Age_08_04', 'HP'], 'Price')
+dtr.predict_Data([5, 100], [30, 180], [40, 69])
 dtr.results('cost')
 dtr.DT_plotter()
 
 # Calling DT regressor with 3 features (max_depth=4 to stop overfitting and
 # maintain consistent accuracy between train and test data)
 dtr2 = MLModel(tree.DecisionTreeRegressor, 'DTR', [
-               'age', 'distance traveled', 'quarterly tax'], MaxDepth=True)
-dtr2.df_Setter(['Age_08_04', 'KM', 'Quarterly_Tax'], 'Price')
-dtr2.predict_Data([5, 100, 100], [15, 100000, 210], [20, 30000, 50])
+    'age', 'horse power', 'quarterly tax'], MaxDepth=True)
+dtr2.df_Setter(['Age_08_04', 'HP', 'Quarterly_Tax'], 'Price')
+dtr2.predict_Data([5, 100, 100], [30, 180, 210], [40, 69, 50])
 dtr2.results('cost')
 dtr2.DT_plotter()
+
 
 # Calling RF classifier with 2 features (max_depth=4 to stop overfitting and
 # maintain consistent accuracy between train and test data)
@@ -61,18 +63,20 @@ rfc2.df_Setter(['Mfg_Year', 'Price', 'Quarterly_Tax', 'Mfg_Month', 'HP',
 rfc2.results('fuel type')
 rfc2.RF_plotter()
 
+
 # Calling RF regressor with 2 features
-rfr = MLModel(RandomForestRegressor, 'RFR', ['age', 'distance traveled'])
-rfr.df_Setter(['Age_08_04', 'KM'], 'Price')
-rfr.predict_Data([5, 100], [15, 100000], [20, 30000])
+rfr = MLModel(RandomForestRegressor, 'RFR', [
+    'age', 'horse power'])
+rfr.df_Setter(['Age_08_04', 'HP'], 'Price')
+rfr.predict_Data([5, 100], [30, 180], [40, 69])
 rfr.results('cost')
 rfr.RF_plotter()
 
 # Calling RF regressor with 3 features
 rfr2 = MLModel(RandomForestRegressor, 'RFR', [
-               'age', 'distance traveled', 'quarterly tax'])
-rfr2.df_Setter(['Age_08_04', 'KM', 'Quarterly_Tax'], 'Price')
-rfr2.predict_Data([5, 100, 100], [15, 100000, 210], [20, 30000, 50])
+    'age', 'horse power', 'quarterly tax'])
+rfr2.df_Setter(['Age_08_04', 'HP', 'Quarterly_Tax'], 'Price')
+rfr2.predict_Data([5, 100, 100], [30, 180, 210], [40, 69, 50])
 rfr2.results('cost')
 rfr2.RF_plotter()
 
