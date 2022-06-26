@@ -56,12 +56,12 @@ rfc2.results('fuel type')
 rfc2.RF_plotter()
 
 # Calling RF classifier with 11 features
-rfc2 = MLModel(RandomForestClassifier, 'RFC_Full', ['manifacture year', 'cost', 'quarterly tax', 'manifacture month',
+rfc3 = MLModel(RandomForestClassifier, 'RFC_Full', ['manifacture year', 'cost', 'quarterly tax', 'manifacture month',
                                                     'horse power', 'automatic', 'cc', 'doors', 'cylinders', 'gears', 'weight'], MaxDepth=1)
-rfc2.df_Setter(['Mfg_Year', 'Price', 'Quarterly_Tax', 'Mfg_Month', 'HP',
+rfc3.df_Setter(['Mfg_Year', 'Price', 'Quarterly_Tax', 'Mfg_Month', 'HP',
                'Automatic', 'CC', 'Doors', 'Cylinders', 'Gears', 'Weight'], 'Fuel_Type')
-rfc2.results('fuel type')
-rfc2.RF_plotter()
+rfc3.results('fuel type')
+rfc3.RF_plotter()
 
 
 # Calling RF regressor with 2 features
@@ -81,9 +81,9 @@ rfr2.results('cost')
 rfr2.RF_plotter()
 
 # Calling RF regressor with 12 features
-rfr2 = MLModel(RandomForestRegressor, 'RFR_Full', ['age', 'distance traveled', 'quarterly tax', 'manifacture month',
+rfr3 = MLModel(RandomForestRegressor, 'RFR_Full', ['age', 'distance traveled', 'quarterly tax', 'manifacture month',
                                                    'manifacture year', 'horse power', 'automatic', 'cc', 'doors', 'cylinders', 'gears', 'weight'])
-rfr2.df_Setter(['Age_08_04', 'KM', 'Quarterly_Tax', 'Mfg_Month', 'Mfg_Year',
+rfr3.df_Setter(['Age_08_04', 'KM', 'Quarterly_Tax', 'Mfg_Month', 'Mfg_Year',
                'HP', 'Automatic', 'CC', 'Doors', 'Cylinders', 'Gears', 'Weight'], 'Price')
-rfr2.results('cost')
-rfr.RF_plotter()
+rfr3.results('cost')
+rfr3.RF_plotter()
