@@ -20,13 +20,14 @@ warnings.filterwarnings(
 
 
 class MLModel:
-    def __init__(self, model, modelName, features, MaxDepth=False, NN=False):
+    def __init__(self, model, modelName, features, MaxDepth=False, NN=False, kernel='rbf'):
         self.model = model
         self.modelName = modelName
         self.modelLength = len(features)
         self.features = features
         self.MaxDepth = MaxDepth
         self.NN = NN
+        self.kernel = kernel
         self.readData()
 
     # Read Data
@@ -58,6 +59,8 @@ class MLModel:
         elif self.NN == True:
             self.data = self.model(
                 hidden_layer_sizes=layers, max_iter=20000, random_state=1)
+        elif self.modelName == "SVMR":
+            self.data = self.model(kernel=self.kernel)
         else:
             self.data = self.model()
         self.data.fit(self.X_train.values, self.y_train.values)
@@ -93,7 +96,7 @@ class MLModel:
         r2 = self.data.score(X, z)
 
         x_pred = np.linspace(1, 80, 30)
-        y_pred = np.linspace(1, 243000, 30)
+        y_pred = np.linspace(1, 210, 30)
         xx_pred, yy_pred = np.meshgrid(x_pred, y_pred)
         model_viz = np.array([xx_pred.flatten(), yy_pred.flatten()]).T
         predicted = self.data.predict(model_viz)
@@ -134,11 +137,19 @@ class MLModel:
         input('Press any key to continue: ')
 
     def DT_plotter(self):
+        if self.modelName == "DTC":
+            print(classification_report(self.y_test,
+                                        self.data.predict(self.X_test.values)))
+
         tree.plot_tree(self.data, filled=True)
         plt.show()
         input('Press any key to continue: ')
 
     def RF_plotter(self):
+        if self.modelName == "RFC" or self.modelName == "RFC_Full":
+            print(classification_report(self.y_test,
+                                        self.data.predict(self.X_test.values)))
+
         importances = self.data.feature_importances_
         indices = np.argsort(importances)
 
@@ -168,11 +179,9 @@ class MLModel:
                 self.y_test.values, self.data.predict(self.X_test.values)))
 
     def SVM_plotter(self, predictor='Fuel_Type'):
-        if self.modelName == "SVMR":
-            expected_y = self.y_test.values
-            predicted_y = self.data.predict(self.X_test.values)
-            score = metrics.mean_squared_error(expected_y, predicted_y)
-            print(score)
+        if self.modelName == "SVMC":
+            print(metrics.classification_report(
+                self.y_test.values, self.data.predict(self.X_test.values)))
 
         df = pd.DataFrame(self.y_train)
         df[predictor] = df[predictor].astype('category')
